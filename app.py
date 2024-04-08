@@ -36,7 +36,8 @@ prompt=[
         SELECT COUNT(*) FROM STUDENT;
     Example 2 - Tell me all the students studying in Data Science class?, the SQL command will be something like this
         SELECT * FROM STUDENT WHERE CLASS="Data Science";
-    also the response must contain only the SQL query. Do not include any unnecessary character at the beginning or end of SQL query.
+    also the response must not contains any unnecessary character at the beginning or end of SQL query. 
+    Please make sure to return values NAME, CLASS, SECTION, MARKS where ever possible.
     """
 ]
 
@@ -51,6 +52,7 @@ if submit:
     sql=get_gemini_response(question,prompt)
     print(sql)
     response=read_sql_query(sql,"student.db")
-    st.subheader("The Response is")
-    values = '\n'.join([str(row) for row in response]).replace("(", "").replace(")", "").replace("'", "").replace(",","")
-    st.header(values)
+    st.header("The Response is")
+    print(response)
+    for row in response:
+        st.subheader(''.join(str(row)).replace("(", "").replace(")", "").replace("'", "").replace(",",""))
